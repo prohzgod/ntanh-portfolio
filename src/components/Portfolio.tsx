@@ -118,24 +118,45 @@ function StackCarousel() {
 
 export default function Portfolio() {
   const [openProject, setOpenProject] = useState(featuredProjects[0].name);
+  const [contactName, setContactName] = useState('');
+  const [contactEmail, setContactEmail] = useState('');
+  const [contactMessage, setContactMessage] = useState('');
+  const isContactReady =
+    contactName.trim().length > 0 &&
+    contactEmail.trim().length > 0 &&
+    contactMessage.trim().length > 0;
+  const contactMailto = `mailto:${profile.email}?subject=${encodeURIComponent(
+    `Portfolio contact - ${contactName.trim() || 'Someone'}`,
+  )}&body=${encodeURIComponent(
+    `Hi ${profile.displayName},\n\nMy name is ${contactName.trim()}.\nYou can reach me back at ${contactEmail.trim()}.\n\n${contactMessage.trim()}\n\nLet's make it happen!`,
+  )}`;
 
   return (
-    <main className="min-h-screen bg-[#f1eee7] pb-24 text-[#181612]">
+    <main className="min-h-screen bg-[#f1eee7] text-[#181612]">
       <ProgressPlayer />
-      <nav className="fixed right-4 top-4 z-40 hidden gap-2 font-mono text-[10px] font-black uppercase tracking-[0.16em] text-[#181612] md:flex">
-        {[
-          ['Work', '#work'],
-          ['Stack', '#stack'],
-          ['Contact', '#contact'],
-        ].map(([label, href]) => (
-          <a
-            key={href}
-            href={href}
-            className="border border-[#181612]/15 bg-[#f1eee7]/80 px-3 py-2 backdrop-blur-xl transition-colors hover:bg-[#181612] hover:text-[#f1eee7]"
-          >
-            {label}
-          </a>
-        ))}
+      <nav className="fixed inset-x-4 top-4 z-40 flex items-center justify-between gap-4">
+        <a
+          href="#top"
+          aria-label="Back to top"
+          className="font-display text-lg font-light italic tracking-[-0.01em] text-[#181612]/75 transition-colors hover:text-[#181612] sm:text-xl"
+        >
+          {'//tuananh'}
+        </a>
+        <div className="hidden gap-2 font-mono text-[10px] font-black uppercase tracking-[0.16em] text-[#181612] md:flex">
+          {[
+            ['Work', '#work'],
+            ['Stack', '#stack'],
+            ['Contact', '#contact'],
+          ].map(([label, href]) => (
+            <a
+              key={href}
+              href={href}
+              className="border border-[#181612]/15 bg-[#f1eee7]/80 px-3 py-2 backdrop-blur-xl transition-colors hover:bg-[#181612] hover:text-[#f1eee7]"
+            >
+              {label}
+            </a>
+          ))}
+        </div>
       </nav>
 
       <motion.section
@@ -159,8 +180,7 @@ export default function Portfolio() {
             show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: revealTransition },
           }}
         >
-          <SectionNumber>portfolio</SectionNumber>
-          <h1 className="mt-8 max-w-5xl text-[clamp(4.5rem,11vw,12rem)] font-black uppercase leading-[0.76] tracking-[-0.09em]">
+          <h1 className="max-w-5xl font-display text-6xl font-bold uppercase leading-[1.02] tracking-normal">
             Java
             <br />
             Backend
@@ -261,7 +281,7 @@ export default function Portfolio() {
               <div className="grid gap-6 sm:grid-cols-[90px_0.8fr_1.2fr] sm:items-start">
                 <p className="font-mono text-sm font-black text-[#181612]/35">{number}</p>
                 <div>
-                  <h2 className="text-4xl font-black uppercase leading-[0.9] tracking-[-0.07em] sm:text-6xl">
+                  <h2 className="font-display text-3xl font-bold uppercase leading-[1.08] tracking-normal sm:text-5xl">
                     {project.name}
                   </h2>
                   <div className="mt-5 flex flex-wrap gap-2 font-mono text-[10px] font-black uppercase tracking-[0.16em] text-[#181612]/55">
@@ -270,6 +290,32 @@ export default function Portfolio() {
                   </div>
                 </div>
                 <div>
+                  <motion.button
+                    type="button"
+                    aria-label={`Open details for ${project.name}`}
+                    onClick={() => setOpenProject(isOpen ? '' : project.name)}
+                    whileHover={{ y: -6 }}
+                    whileTap={{ scale: 0.99 }}
+                    transition={{ type: 'spring', stiffness: 260, damping: 22 }}
+                    className="group relative mb-6 block aspect-[16/10] w-full cursor-pointer overflow-hidden border border-[#181612]/15 bg-[#e6e1d8] text-left"
+                  >
+                    <Image
+                      src={project.imageUrl}
+                      alt={`${project.name} visual concept`}
+                      fill
+                      sizes="(max-width: 640px) 92vw, (max-width: 1024px) 70vw, 620px"
+                      className="object-cover grayscale transition duration-500 group-hover:scale-[1.035] group-hover:grayscale-0"
+                    />
+                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(24,22,18,0)_35%,rgba(24,22,18,0.62)_100%)] opacity-80 transition-opacity group-hover:opacity-95" />
+                    <div className="absolute left-4 top-4 rounded-full bg-[#d84a32] px-3 py-2 font-mono text-[10px] font-black uppercase tracking-[0.16em] text-[#f1eee7]">
+                      {number}
+                    </div>
+                    <div className="absolute inset-x-4 bottom-4 flex items-end justify-between gap-4">
+                      <span className="max-w-[70%] font-mono text-[10px] font-black uppercase tracking-[0.16em] text-[#f1eee7]/80">
+                        Project visual
+                      </span>
+                    </div>
+                  </motion.button>
                   <p className="max-w-2xl text-lg font-semibold leading-relaxed text-[#181612]/65">
                     {project.description}
                   </p>
@@ -361,7 +407,7 @@ export default function Portfolio() {
           <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end">
             <div>
             <SectionNumber>technical stack</SectionNumber>
-              <h2 className="mt-5 text-4xl font-black uppercase leading-[0.82] tracking-[-0.08em] sm:text-7xl">
+              <h2 className="mt-5 font-display text-3xl font-bold uppercase leading-[1.02] tracking-normal sm:text-6xl">
               Systems
               <br />
               built
@@ -380,33 +426,89 @@ export default function Portfolio() {
       <motion.section id="contact" className="mx-auto grid max-w-[1600px] gap-10 px-5 py-20 sm:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:px-10" {...revealProps}>
         <div>
           <SectionNumber>contact</SectionNumber>
-          <h2 className="mt-6 text-5xl font-black uppercase leading-[0.84] tracking-[-0.08em] sm:text-7xl">
+          <h2 className="mt-6 font-display text-4xl font-bold uppercase leading-[1.02] tracking-normal sm:text-6xl">
             Contact
             <br />
-            <span className="mt-2 block break-all text-[clamp(1.6rem,4vw,3.4rem)] lowercase tracking-[-0.04em]">
+            <span className="mt-2 block whitespace-nowrap font-body text-[clamp(1.05rem,2.6vw,2.2rem)] font-extrabold normal-case leading-tight tracking-[-0.02em] text-[#181612]/85">
               {profile.email}
             </span>
             <br />
-            <span className="text-[clamp(2.4rem,6vw,5.4rem)]">{profile.location}</span>
+            <span className="text-[clamp(2rem,4.6vw,4.2rem)] tracking-[-0.02em]">{profile.location}</span>
           </h2>
+          <a
+            href={profile.linkedin}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-6 inline-flex border border-[#181612]/30 px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] text-[#181612]/70 transition-colors hover:border-[#181612] hover:bg-[#181612] hover:text-[#f1eee7]"
+          >
+            LinkedIn
+          </a>
         </div>
-        <div className="flex flex-col justify-end gap-4 border-l border-[#181612]/12 pl-6">
-          <p className="max-w-xl text-xl font-semibold leading-snug text-[#181612]/65">
-            {profile.impact}
-          </p>
-          <div className="flex flex-wrap gap-3 pt-4">
-            <a className="bg-[#181612] px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] text-white shadow-[inset_0_0_0_1px_rgba(241,238,231,0.18)] transition-colors hover:bg-[#2a2722]" href={`mailto:${profile.email}`}>
-              Email
-            </a>
-            <a className="border border-[#181612] px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] transition-colors hover:bg-[#181612] hover:text-[#f1eee7]" href={profile.resumeUrl} target="_blank" rel="noreferrer">
-              Resume
-            </a>
-            <a className="border border-[#181612]/30 px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] transition-colors hover:border-[#181612] hover:bg-[#181612] hover:text-[#f1eee7]" href={profile.linkedin} target="_blank" rel="noreferrer">
-              LinkedIn
-            </a>
+        <div className="flex flex-col justify-end gap-6 border-l border-[#181612]/12 pl-6">
+          <div className="max-w-3xl text-3xl font-semibold leading-[1.35] tracking-[-0.02em] text-[#181612]/76 sm:text-4xl">
+            Hi {profile.displayName}, my name is{' '}
+            <input
+              aria-label="Your name"
+              value={contactName}
+              onChange={(event) => setContactName(event.target.value)}
+              placeholder="your name"
+              className="min-w-[8ch] max-w-full border-0 border-b border-[#181612]/25 bg-transparent px-1 font-display italic text-[#181612] outline-none transition-colors placeholder:text-[#181612]/30 focus:border-[#181612]"
+            />
+            . You can reach me back at{' '}
+            <input
+              aria-label="Email address"
+              value={contactEmail}
+              onChange={(event) => setContactEmail(event.target.value)}
+              placeholder="email address"
+              inputMode="email"
+              className="min-w-[12ch] max-w-full border-0 border-b border-[#181612]/25 bg-transparent px-1 font-display italic text-[#181612] outline-none transition-colors placeholder:text-[#181612]/30 focus:border-[#181612]"
+            />
+            .
           </div>
+          <textarea
+            aria-label="Message"
+            value={contactMessage}
+            onChange={(event) => setContactMessage(event.target.value)}
+            placeholder="Write the full message here..."
+            rows={5}
+            className="min-h-40 w-full resize-none border-0 border-l-2 border-[#181612]/20 bg-transparent px-5 py-4 text-xl font-semibold leading-relaxed text-[#181612] outline-none transition-colors placeholder:text-[#181612]/30 focus:border-[#181612] sm:text-2xl"
+          />
+          <p className="text-3xl font-semibold leading-[1.35] tracking-[-0.02em] text-[#181612]/76 sm:text-4xl">
+            Let&apos;s make it happen!
+          </p>
+
+          <motion.button
+            type="button"
+            disabled={!isContactReady}
+            onClick={() => {
+              if (isContactReady) {
+                window.location.href = contactMailto;
+              }
+            }}
+            animate={{
+              opacity: isContactReady ? 1 : 0.42,
+              y: isContactReady ? 0 : 4,
+              filter: isContactReady ? 'blur(0px)' : 'blur(0.5px)',
+            }}
+            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            className="w-fit bg-[#181612] px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] text-white shadow-[inset_0_0_0_1px_rgba(241,238,231,0.18)] transition-colors hover:bg-[#2a2722] disabled:cursor-not-allowed disabled:hover:bg-[#181612]"
+          >
+            Send
+          </motion.button>
         </div>
       </motion.section>
+
+      <footer className="border-t border-[#f1eee7]/12 bg-[#181612]">
+        <div className="mx-auto flex max-w-[1600px] justify-center px-5 py-8 font-mono text-[10px] font-black uppercase tracking-[0.16em] text-[#f1eee7]/55 sm:px-8 lg:px-10">
+          <p className="inline-flex flex-wrap items-center justify-center gap-2 text-center">
+            © 2026 · Built with
+            <span aria-label="love" role="img" className="text-[#d84a32]">
+              ♥
+            </span>
+            by Tuấn Anh
+          </p>
+        </div>
+      </footer>
     </main>
   );
 }

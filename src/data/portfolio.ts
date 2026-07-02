@@ -32,6 +32,7 @@ export const skills = [
 export const featuredProjects = [
   {
     name: 'Sales & Loan Management Platform',
+    imageUrl: '/projects/sales-loan-management.png',
     period: 'Jul 2024 - Present',
     role: 'Backend Developer',
     description:
@@ -46,6 +47,7 @@ export const featuredProjects = [
   },
   {
     name: 'Test Case Management',
+    imageUrl: '/projects/test-case-management.png',
     period: 'Feb 2024 - Jul 2024',
     role: 'Full-stack Software Engineer',
     description:
@@ -60,6 +62,7 @@ export const featuredProjects = [
   },
   {
     name: 'Insurance Packages Comparison',
+    imageUrl: '/projects/insurance-comparison.png',
     period: 'Aug 2023 - Feb 2024',
     role: 'Backend Developer',
     description:
@@ -74,6 +77,7 @@ export const featuredProjects = [
   },
   {
     name: 'Customer Loyalty App',
+    imageUrl: '/projects/customer-loyalty.png',
     period: 'Jul 2022 - Oct 2022',
     role: 'Full-stack Developer / Feature Owner',
     description:

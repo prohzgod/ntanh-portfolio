@@ -1,5 +1,24 @@
 import type { Metadata } from 'next';
+import { JetBrains_Mono, Plus_Jakarta_Sans, Syne } from 'next/font/google';
 import './globals.css';
+
+const syne = Syne({
+  subsets: ['latin'],
+  variable: '--font-syne',
+  display: 'swap',
+});
+
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  variable: '--font-jakarta',
+  display: 'swap',
+});
+
+const jetbrains = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-jetbrains',
+  display: 'swap',
+});
 
 export const viewport = {
   themeColor: '#f1eee7',
@@ -52,8 +71,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" className={`${syne.variable} ${jakarta.variable} ${jetbrains.variable}`}>
+      <body className={`${jakarta.className} font-body antialiased bg-stone-50 text-stone-900`}>
+        {children}
+      </body>
     </html>
   );
 }
