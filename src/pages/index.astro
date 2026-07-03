@@ -1,0 +1,11 @@
+---
+import Portfolio from '@/components/Portfolio';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import '@/styles/globals.css';
+
+export const prerender = true;
+---
+
+<BaseLayout>
+  <Portfolio client:load />
+</BaseLayout>

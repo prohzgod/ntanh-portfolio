@@ -2,26 +2,41 @@
   "name": "portfolio",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
+    "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "start": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
+    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
+    "lint": "ASTRO_TELEMETRY_DISABLED=1 astro check"
   },
   "dependencies": {
+    "@astrojs/markdoc": "1.0.6",
+    "@astrojs/react": "5.0.7",
+    "@astrojs/vercel": "10.0.8",
+    "@keystatic/astro": "^5.1.0",
+    "@keystatic/core": "^0.5.50",
     "@tailwindcss/postcss": "^4.3.2",
+    "astro": "6.4.8",
     "framer-motion": "^12.42.2",
-    "next": "16.2.9",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "tailwindcss": "^4.3.2"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.9",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.2.9",
     "typescript": "^5"
+  },
+  "overrides": {
+    "esbuild": "0.28.1",
+    "path-to-regexp": "6.3.0",
+    "vite": "7.3.6"
   }
 }

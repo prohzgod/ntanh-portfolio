@@ -1,0 +1,73 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+}
+
+const {
+  title = 'Nguyen Tuan Anh - Software Engineer',
+  description = 'Software Engineer and Java Backend Developer building enterprise APIs, microservices, integrations, and production-ready systems.',
+  image = '/portrait-nguyen-tuan-anh.png',
+  type = 'website',
+} = Astro.props;
+
+const site = Astro.site ?? new URL('http://localhost:4321');
+const canonical = new URL(Astro.url.pathname, site).toString();
+const ogImage = new URL(image, site).toString();
+---
+
+<!doctype html>
+<html lang="en" class="bg-stone-50 text-stone-900">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f1eee7" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta
+      name="keywords"
+      content="Nguyen Tuan Anh, Java Backend Developer, Software Engineer, Spring Boot, Microservices, PostgreSQL, Ho Chi Minh City"
+    />
+    <meta name="author" content="Nguyen Tuan Anh" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Syne:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1254" />
+    <meta property="og:image:height" content="1254" />
+    <meta property="og:image:alt" content="Nguyen Tuan Anh portrait" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <style is:global>
+      :root {
+        --font-syne: "Syne";
+        --font-jakarta: "Plus Jakarta Sans";
+        --font-jetbrains: "JetBrains Mono";
+      }
+
+      astro-island[ssr] [style*="opacity:0"],
+      astro-island[ssr] [style*="opacity: 0"] {
+        filter: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    </style>
+  </head>
+  <body class="font-body antialiased bg-stone-50 text-stone-900">
+    <slot />
+  </body>
+</html>

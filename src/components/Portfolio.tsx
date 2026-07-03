@@ -1,7 +1,4 @@
-'use client';
-
 import { useState, type PointerEvent } from 'react';
-import Image from 'next/image';
 import {
   AnimatePresence,
   motion,
@@ -71,14 +68,11 @@ function PortraitStage() {
         className="absolute inset-0"
         style={{ y: portraitY, scale: portraitScale }}
       >
-        <Image
+        <img
           src={portraitCutoutUrl}
           alt={profile.displayName}
-          fill
-          priority
           draggable={false}
-          sizes="(max-width: 768px) 92vw, 560px"
-          className="pointer-events-none object-contain object-bottom drop-shadow-[0_28px_42px_rgba(24,22,18,0.2)]"
+          className="pointer-events-none h-full w-full object-contain object-bottom drop-shadow-[0_28px_42px_rgba(24,22,18,0.2)]"
         />
       </motion.div>
     </div>
@@ -171,6 +165,7 @@ export default function Portfolio() {
           {[
             ['Work', '#work'],
             ['Stack', '#stack'],
+            ['Blog', '/blog/'],
             ['Contact', '#contact'],
           ].map(([label, href]) => {
             const clickId = `nav-${label.toLowerCase()}`;
@@ -180,7 +175,7 @@ export default function Portfolio() {
                 key={href}
                 href={href}
                 onClick={() => markClicked(clickId)}
-                className={`press-bleed border border-[#181612]/15 bg-[#f1eee7]/80 px-3 py-2 backdrop-blur-xl transition-colors hover:bg-[#181612] hover:text-[#f1eee7]${clickedClass(clickId)}`}
+                className={`portfolio-nav-link press-bleed border border-[#181612]/15 bg-[#f1eee7]/80 px-3 py-2 backdrop-blur-xl transition-colors [--clicked-border:#181612] [--clicked-fill:#181612] [--clicked-text:#f1eee7]${clickedClass(clickId)}`}
               >
                 {label}
               </a>
@@ -233,7 +228,7 @@ export default function Portfolio() {
               target="_blank"
               rel="noreferrer"
               onClick={() => markClicked('hero-resume')}
-              className={`press-bleed border border-[#181612] px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] transition-colors hover:bg-[#181612] hover:text-[#f1eee7]${clickedClass('hero-resume')}`}
+              className={`portfolio-outline-action press-bleed border border-[#181612] px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] transition-colors hover:bg-[#181612] hover:text-[#f1eee7]${clickedClass('hero-resume')}`}
             >
               Resume
             </a>
@@ -242,7 +237,7 @@ export default function Portfolio() {
               target="_blank"
               rel="noreferrer"
               onClick={() => markClicked('hero-linkedin')}
-              className={`press-bleed border border-[#181612]/30 px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] text-[#181612]/70 transition-colors hover:border-[#181612] hover:text-[#181612]${clickedClass('hero-linkedin')}`}
+              className={`portfolio-outline-action press-bleed border border-[#181612]/30 px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] text-[#181612]/70 transition-colors hover:border-[#181612] hover:text-[#181612]${clickedClass('hero-linkedin')}`}
             >
               LinkedIn
             </a>
@@ -333,8 +328,6 @@ export default function Portfolio() {
                     transition={{ type: 'spring', stiffness: 260, damping: 22 }}
                     className="group relative mb-6 block aspect-[16/10] w-full cursor-pointer overflow-hidden border border-[#181612]/15 bg-[#e6e1d8] text-left"
                   >
-                    {/* Use a native image here so scroll-restored reloads do not wait on the Next image optimizer. */}
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={project.imageUrl}
                       alt={`${project.name} visual concept`}
@@ -363,7 +356,7 @@ export default function Portfolio() {
                       markClicked(`project-details-${project.name}`);
                       setOpenProject(isOpen ? '' : project.name);
                     }}
-                    className={`press-bleed mt-6 inline-flex cursor-pointer items-center gap-3 border border-[#181612] px-4 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] transition-colors hover:bg-[#181612] hover:text-[#f1eee7]${clickedClass(`project-details-${project.name}`)}`}
+                    className={`portfolio-outline-action press-bleed mt-6 inline-flex cursor-pointer items-center gap-3 border border-[#181612] px-4 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] transition-colors hover:bg-[#181612] hover:text-[#f1eee7]${clickedClass(`project-details-${project.name}`)}`}
                   >
                     <span>{isOpen ? 'Hide details' : 'View details'}</span>
                     <motion.span
@@ -479,7 +472,7 @@ export default function Portfolio() {
             target="_blank"
             rel="noreferrer"
             onClick={() => markClicked('contact-linkedin')}
-            className={`press-bleed mt-6 inline-flex border border-[#181612]/30 px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] text-[#181612]/70 transition-colors hover:border-[#181612] hover:bg-[#181612] hover:text-[#f1eee7]${clickedClass('contact-linkedin')}`}
+            className={`portfolio-outline-action press-bleed mt-6 inline-flex border border-[#181612]/30 px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] text-[#181612]/70 transition-colors hover:border-[#181612] hover:bg-[#181612] hover:text-[#f1eee7]${clickedClass('contact-linkedin')}`}
           >
             LinkedIn
           </a>
