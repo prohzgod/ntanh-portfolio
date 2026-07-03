@@ -20,6 +20,57 @@
   }
 }
 
+.press-bleed {
+  isolation: isolate;
+  overflow: hidden;
+  position: relative;
+}
+
+.press-bleed::after {
+  background: var(--press-color, rgba(24, 22, 18, 0.18));
+  content: "";
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transform: translateX(-100%);
+  transition:
+    opacity 220ms ease,
+    transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 20;
+}
+
+@keyframes press-bleed-flash {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+
+  18% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+.press-bleed[data-pressing="true"]::after {
+  animation: press-bleed-flash 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.press-bleed:disabled::after {
+  display: none;
+}
+
+.clicked-cta {
+  border-color: var(--clicked-border, rgba(24, 22, 18, 0.42));
+  box-shadow: inset 0 0 0 999px var(--clicked-fill, rgba(24, 22, 18, 0.08));
+  color: var(--clicked-text, inherit);
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 24px;

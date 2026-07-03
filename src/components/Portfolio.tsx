@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type PointerEvent } from 'react';
 import Image from 'next/image';
 import {
   AnimatePresence,
@@ -118,6 +118,7 @@ function StackCarousel() {
 
 export default function Portfolio() {
   const [openProject, setOpenProject] = useState('');
+  const [clickedButtons, setClickedButtons] = useState<Record<string, boolean>>({});
   const [contactName, setContactName] = useState('');
   const [contactEmail, setContactEmail] = useState('');
   const [contactMessage, setContactMessage] = useState('');
@@ -130,9 +131,33 @@ export default function Portfolio() {
   )}&body=${encodeURIComponent(
     `Hi ${profile.displayName},\n\nMy name is ${contactName.trim()}.\nYou can reach me back at ${contactEmail.trim()}.\n\n${contactMessage.trim()}\n\nLet's make it happen!`,
   )}`;
+  const markClicked = (id: string) => {
+    setClickedButtons((current) => ({ ...current, [id]: true }));
+  };
+  const clickedClass = (id: string) => (clickedButtons[id] ? ' clicked-cta' : '');
+  const handlePressBleed = (event: PointerEvent<HTMLElement>) => {
+    const target = event.target as HTMLElement;
+    const pressTarget = target.closest<HTMLElement>('.press-bleed');
+
+    if (!pressTarget || pressTarget.getAttribute('aria-disabled') === 'true') {
+      return;
+    }
+
+    if ('disabled' in pressTarget && pressTarget.disabled) {
+      return;
+    }
+
+    pressTarget.dataset.pressing = 'false';
+    window.requestAnimationFrame(() => {
+      pressTarget.dataset.pressing = 'true';
+      window.setTimeout(() => {
+        delete pressTarget.dataset.pressing;
+      }, 440);
+    });
+  };
 
   return (
-    <main className="min-h-screen bg-[#f1eee7] text-[#181612]">
+    <main className="min-h-screen bg-[#f1eee7] text-[#181612]" onPointerDownCapture={handlePressBleed}>
       <ProgressPlayer />
       <nav className="fixed inset-x-4 top-4 z-40 flex items-center justify-between gap-4">
         <a
@@ -147,15 +172,20 @@ export default function Portfolio() {
             ['Work', '#work'],
             ['Stack', '#stack'],
             ['Contact', '#contact'],
-          ].map(([label, href]) => (
-            <a
-              key={href}
-              href={href}
-              className="border border-[#181612]/15 bg-[#f1eee7]/80 px-3 py-2 backdrop-blur-xl transition-colors hover:bg-[#181612] hover:text-[#f1eee7]"
-            >
-              {label}
-            </a>
-          ))}
+          ].map(([label, href]) => {
+            const clickId = `nav-${label.toLowerCase()}`;
+
+            return (
+              <a
+                key={href}
+                href={href}
+                onClick={() => markClicked(clickId)}
+                className={`press-bleed border border-[#181612]/15 bg-[#f1eee7]/80 px-3 py-2 backdrop-blur-xl transition-colors hover:bg-[#181612] hover:text-[#f1eee7]${clickedClass(clickId)}`}
+              >
+                {label}
+              </a>
+            );
+          })}
         </div>
       </nav>
 
@@ -193,7 +223,8 @@ export default function Portfolio() {
           <div className="mt-6 flex flex-wrap gap-3">
             <a
               href="#work"
-              className="bg-[#181612] px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] text-[#f1eee7] transition-colors hover:bg-[#2a2722]"
+              onClick={() => markClicked('hero-work')}
+              className={`press-bleed bg-[#181612] px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] text-[#f1eee7] transition-colors hover:bg-[#2a2722] [--clicked-fill:rgba(241,238,231,0.14)] [--press-color:rgba(241,238,231,0.18)]${clickedClass('hero-work')}`}
             >
               View work
             </a>
@@ -201,7 +232,8 @@ export default function Portfolio() {
               href={profile.resumeUrl}
               target="_blank"
               rel="noreferrer"
-              className="border border-[#181612] px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] transition-colors hover:bg-[#181612] hover:text-[#f1eee7]"
+              onClick={() => markClicked('hero-resume')}
+              className={`press-bleed border border-[#181612] px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] transition-colors hover:bg-[#181612] hover:text-[#f1eee7]${clickedClass('hero-resume')}`}
             >
               Resume
             </a>
@@ -209,7 +241,8 @@ export default function Portfolio() {
               href={profile.linkedin}
               target="_blank"
               rel="noreferrer"
-              className="border border-[#181612]/30 px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] text-[#181612]/70 transition-colors hover:border-[#181612] hover:text-[#181612]"
+              onClick={() => markClicked('hero-linkedin')}
+              className={`press-bleed border border-[#181612]/30 px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] text-[#181612]/70 transition-colors hover:border-[#181612] hover:text-[#181612]${clickedClass('hero-linkedin')}`}
             >
               LinkedIn
             </a>
@@ -269,10 +302,13 @@ export default function Portfolio() {
             return (
             <motion.article
               key={project.name}
-              initial={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 34, filter: 'blur(8px)' }}
+              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              viewport={{ once: true, amount: 0.16, margin: '0px 0px -8% 0px' }}
               transition={{
-                opacity: { duration: 0.55, delay: index * 0.06 },
+                opacity: { duration: 0.55, delay: index * 0.04 },
                 y: { duration: 0.55, delay: index * 0.06, ease: [0.22, 1, 0.36, 1] },
+                filter: { duration: 0.55, delay: index * 0.04 },
               }}
               className="py-8"
             >
@@ -323,8 +359,11 @@ export default function Portfolio() {
                     type="button"
                     aria-expanded={isOpen}
                     aria-controls={`project-details-${index}`}
-                    onClick={() => setOpenProject(isOpen ? '' : project.name)}
-                    className="mt-6 inline-flex cursor-pointer items-center gap-3 border border-[#181612] px-4 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] transition-colors hover:bg-[#181612] hover:text-[#f1eee7]"
+                    onClick={() => {
+                      markClicked(`project-details-${project.name}`);
+                      setOpenProject(isOpen ? '' : project.name);
+                    }}
+                    className={`press-bleed mt-6 inline-flex cursor-pointer items-center gap-3 border border-[#181612] px-4 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] transition-colors hover:bg-[#181612] hover:text-[#f1eee7]${clickedClass(`project-details-${project.name}`)}`}
                   >
                     <span>{isOpen ? 'Hide details' : 'View details'}</span>
                     <motion.span
@@ -439,7 +478,8 @@ export default function Portfolio() {
             href={profile.linkedin}
             target="_blank"
             rel="noreferrer"
-            className="mt-6 inline-flex border border-[#181612]/30 px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] text-[#181612]/70 transition-colors hover:border-[#181612] hover:bg-[#181612] hover:text-[#f1eee7]"
+            onClick={() => markClicked('contact-linkedin')}
+            className={`press-bleed mt-6 inline-flex border border-[#181612]/30 px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] text-[#181612]/70 transition-colors hover:border-[#181612] hover:bg-[#181612] hover:text-[#f1eee7]${clickedClass('contact-linkedin')}`}
           >
             LinkedIn
           </a>
@@ -481,6 +521,7 @@ export default function Portfolio() {
             disabled={!isContactReady}
             onClick={() => {
               if (isContactReady) {
+                markClicked('contact-send');
                 window.location.href = contactMailto;
               }
             }}
@@ -490,7 +531,7 @@ export default function Portfolio() {
               filter: isContactReady ? 'blur(0px)' : 'blur(0.5px)',
             }}
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-            className="w-fit bg-[#181612] px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] text-white shadow-[inset_0_0_0_1px_rgba(241,238,231,0.18)] transition-colors hover:bg-[#2a2722] disabled:cursor-not-allowed disabled:hover:bg-[#181612]"
+            className={`press-bleed w-fit bg-[#181612] px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] text-white shadow-[inset_0_0_0_1px_rgba(241,238,231,0.18)] transition-colors hover:bg-[#2a2722] disabled:cursor-not-allowed disabled:hover:bg-[#181612] [--clicked-fill:rgba(241,238,231,0.14)] [--press-color:rgba(241,238,231,0.18)]${clickedClass('contact-send')}`}
           >
             Send
           </motion.button>
