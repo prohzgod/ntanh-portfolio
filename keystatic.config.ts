@@ -1,12 +1,9 @@
 import { collection, config, fields } from '@keystatic/core';
 
 export default config({
-  storage: import.meta.env.DEV
-    ? { kind: 'local' }
-    : {
-        kind: 'github',
-        repo: 'prohzgod/ntanh-portfolio',
-      },
+  storage: {
+    kind: 'local',
+  },
   ui: {
     brand: {
       name: 'Tuan Anh Portfolio',

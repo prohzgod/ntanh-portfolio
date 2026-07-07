@@ -18,4 +18,4 @@ npm run lint
 - `src/content/blog` stores Markdoc blog posts.
 - `keystatic.config.ts` defines the local Keystatic CMS schema.
 
-Run the dev server and open `/keystatic` to manage blog posts locally.
+Run the dev server and open `/keystatic` to manage blog posts locally. The CMS is not mounted in production, so deployed builds do not need GitHub OAuth or `KEYSTATIC_*` environment variables.

@@ -161,7 +161,7 @@ export default function Portfolio() {
         >
           {'//tuananh'}
         </a>
-        <div className="hidden gap-2 font-mono text-[10px] font-black uppercase tracking-[0.16em] text-[#181612] md:flex">
+        <div className="flex gap-1 font-mono text-[9px] font-black uppercase tracking-[0.12em] text-[#181612] sm:gap-2 sm:text-[10px] sm:tracking-[0.16em]">
           {[
             ['Work', '#work'],
             ['Stack', '#stack'],
@@ -175,7 +175,7 @@ export default function Portfolio() {
                 key={href}
                 href={href}
                 onClick={() => markClicked(clickId)}
-                className={`portfolio-nav-link press-bleed border border-[#181612]/15 bg-[#f1eee7]/80 px-3 py-2 backdrop-blur-xl transition-colors [--clicked-border:#181612] [--clicked-fill:#181612] [--clicked-text:#f1eee7]${clickedClass(clickId)}`}
+                className={`portfolio-nav-link press-bleed border border-[#181612]/15 bg-[#f1eee7]/80 px-2 py-2 backdrop-blur-xl transition-colors [--clicked-border:#181612] [--clicked-fill:#181612] [--clicked-text:#f1eee7] sm:px-3${clickedClass(clickId)}`}
               >
                 {label}
               </a>
@@ -228,7 +228,7 @@ export default function Portfolio() {
               target="_blank"
               rel="noreferrer"
               onClick={() => markClicked('hero-resume')}
-              className={`portfolio-outline-action press-bleed border border-[#181612] px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] transition-colors hover:bg-[#181612] hover:text-[#f1eee7]${clickedClass('hero-resume')}`}
+              className="portfolio-outline-action press-bleed border border-[#181612] px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] transition-colors hover:bg-[#181612] hover:text-[#f1eee7]"
             >
               Resume
             </a>
@@ -237,7 +237,7 @@ export default function Portfolio() {
               target="_blank"
               rel="noreferrer"
               onClick={() => markClicked('hero-linkedin')}
-              className={`portfolio-outline-action press-bleed border border-[#181612]/30 px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] text-[#181612]/70 transition-colors hover:border-[#181612] hover:text-[#181612]${clickedClass('hero-linkedin')}`}
+              className="portfolio-outline-action press-bleed border border-[#181612]/30 px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] text-[#181612]/70 transition-colors hover:border-[#181612] hover:text-[#181612]"
             >
               LinkedIn
             </a>
@@ -356,7 +356,7 @@ export default function Portfolio() {
                       markClicked(`project-details-${project.name}`);
                       setOpenProject(isOpen ? '' : project.name);
                     }}
-                    className={`portfolio-outline-action press-bleed mt-6 inline-flex cursor-pointer items-center gap-3 border border-[#181612] px-4 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] transition-colors hover:bg-[#181612] hover:text-[#f1eee7]${clickedClass(`project-details-${project.name}`)}`}
+                    className="portfolio-outline-action press-bleed mt-6 inline-flex cursor-pointer items-center gap-3 border border-[#181612] px-4 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] transition-colors hover:bg-[#181612] hover:text-[#f1eee7]"
                   >
                     <span>{isOpen ? 'Hide details' : 'View details'}</span>
                     <motion.span
@@ -472,7 +472,7 @@ export default function Portfolio() {
             target="_blank"
             rel="noreferrer"
             onClick={() => markClicked('contact-linkedin')}
-            className={`portfolio-outline-action press-bleed mt-6 inline-flex border border-[#181612]/30 px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] text-[#181612]/70 transition-colors hover:border-[#181612] hover:bg-[#181612] hover:text-[#f1eee7]${clickedClass('contact-linkedin')}`}
+            className="portfolio-outline-action press-bleed mt-6 inline-flex border border-[#181612]/30 px-5 py-3 font-mono text-xs font-black uppercase tracking-[0.16em] text-[#181612]/70 transition-colors hover:border-[#181612] hover:bg-[#181612] hover:text-[#f1eee7]"
           >
             LinkedIn
           </a>
